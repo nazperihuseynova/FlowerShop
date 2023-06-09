@@ -1,0 +1,48 @@
+CREATE TABLE customers(
+customer_id number primary key,
+first_name varchar2 (100) not null,
+last_name varchar2 (100) not null,
+address varchar2 (100),
+phone varchar2 (100));
+drop table customers;
+
+create table branches(
+branch_id number Primary Key,
+Location varchar2(100) not null,
+Phone varchar2(100));
+
+create table orders(
+order_id number primary key,
+customer_id number not null,
+branch_id number not null,
+order_date date not null,
+constraint orders_customer_id_FK
+foreign key(customer_id)
+references customers(customer_id),
+constraint orders_branches_id_FK
+foreign key(branch_id)
+references branches(branch_id)
+);
+create table Suppliers(
+supplier_id number,
+name varchar2(100) Not null,
+address varchar2(100),
+constraint suppliers_pk primary Key (supplier_id));
+
+create table flowers
+(flower_id number primary key,
+name varchar2(100) not null,
+price number not null check(price>0),
+supplier_id number ,
+  CONSTRAINT flowers_fk
+    FOREIGN KEY (supplier_id)
+    REFERENCES suppliers(supplier_id)
+);
+
+CREATE TABLE order_details (
+order_id number not null,
+flower_id number not null,
+quantity number not null check(quantity>0),
+CONSTRAINT order_details_order_id_FK foreign key (order_id) references orders (order_id),
+CONSTRAINT order_details_flower_id_FK foreign key (flower_id) references flowers (flower_id)
+);
