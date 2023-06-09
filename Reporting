@@ -1,0 +1,77 @@
+--5.1 Customer Reports
+--Total Customers
+SELECT
+    COUNT(customer_id) AS customer_count
+FROM
+    customers;
+--Customers per Branch
+SELECT
+    count(o.customer_id)
+FROM
+         customers c
+    JOIN orders   o ON c.customer_id = o.customer_id
+    JOIN branches b ON o.branch_id = b.branch_id;
+    
+--5.2 Order Reports
+--Orders per Customer
+SELECT
+    count(o.customer_id)
+FROM
+         orders o
+    JOIN customers c ON o.customer_id = c.customer_id;
+
+--Orders per Branch
+SELECT
+    count(o.order_id)
+FROM
+         orders o
+    JOIN branches b ON o.branch_id = b.branch_id;
+--Orders per Day
+SELECT
+    COUNT(order_id),order_date as number_of_orders
+FROM
+    orders
+group by order_date
+ORDER BY
+    order_date;
+    
+--FlowersReport
+--Most Popular Flowers
+SELECT
+    name
+FROM
+         flowers f
+    INNER JOIN order_details d ON d.flower_id = f.flower_id
+ORDER BY
+    quantity DESC;
+    
+--Flowers per Supplier
+SELECT DISTINCT
+    f.name,s.name
+FROM
+         flowers f
+    JOIN suppliers s ON f.supplier_id = s.supplier_id;
+    
+--5.4 Supplier Reports
+--Suppliers per flower
+SELECT
+    s.name,
+    f.name
+FROM
+         suppliers s
+    JOIN flowers f ON s.supplier_id = f.supplier_id;
+    
+--5.5 Branch Reports
+--Most active branches
+SELECT
+    b.branch_id,
+    COUNT(o.order_id) AS order_number
+FROM
+         branches b
+    JOIN orders        o ON b.branch_id = o.branch_id
+    JOIN order_details od ON o.order_id = od.order_id
+GROUP BY
+    b.branch_id
+ORDER BY
+    order_number DESC;
+
